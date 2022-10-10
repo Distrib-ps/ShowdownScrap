@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+            <script type="text/javascript" src="Test.json"></script>
+            <script type="text/javascript" >
+                function load() {
+                    var mydata = JSON.parse(data);
+                    alert(mydata.length);
+    
+                    var div = document.getElementById('data');
+    
+                    for(var i = 0;i < mydata.length; i++)
+                    {
+                        div.innerHTML = div.innerHTML + "<p class='inner' id="+i+">"+ mydata[i].User +"</p>" + "<br>";
+                    }
+                }
+            </script>
+        </head>
+            
+    </head>
+    <body onload="load()">
+        <div id="demo">
+            <h1></h1>
+            <h2></h2>
+            
+            <!-- Responsive table starts here -->
+            <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
+            <div class="table-responsive-vertical shadow-z-1">
+            <!-- Table starts here -->
+            <div class="wrapper">
+                <div class="profile">
+                   <table id= "gen8ou" border="2">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Elo</th>
+                    <th>GXE</th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+            <div id="data">
+    
+            </div>
+    </body>
+</html>
