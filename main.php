@@ -8,16 +8,16 @@ if(!empty($_POST))
 
   $id=$_POST['id'];
   // chemin d'accès à votre fichier JSON
-  //$url = 'http://pokemonshowdown.com/ladder/'.$id.'.json'; 
-  $url = 'data.json'; 
+  $url = 'http://pokemonshowdown.com/ladder/'.$id.'.json'; 
+  //$url = 'data.json'; 
   // mettre le contenu du fichier dans une variable
   $data = file_get_contents($url); 
   // décoder le flux JSON
   $obj = json_decode('['.$data.']'); 
   // On récupére le format
   } else {
-    //$url = 'http://pokemonshowdown.com/ladder/gen8ou.json'; 
-    $url = 'data.json'; 
+    $url = 'http://pokemonshowdown.com/ladder/gen8ou.json'; 
+    //$url = 'data.json'; 
     $data = file_get_contents($url); 
     $obj = json_decode('['.$data.']'); 
   }

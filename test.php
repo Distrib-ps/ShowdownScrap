@@ -1,12 +1,11 @@
 <?php 
 require('test2.php');
 $pdo=database_connect();
-$req=delete_table();
-
-if(!empty($_POST))
+//$req=delete_table();
+if(!empty($_GET))
 {
 
-  $id=$_POST['id'];
+  $id=$_GET['id'];
   // chemin d'accès à votre fichier JSON
   //$url = 'http://pokemonshowdown.com/ladder/'.$id.'.json'; 
   $url = 'data.json'; 
@@ -15,15 +14,15 @@ if(!empty($_POST))
   // décoder le flux JSON
   $obj = json_decode('['.$data.']'); 
   // On récupére le format
-  } else {
+} else {
     //$url = 'http://pokemonshowdown.com/ladder/gen8ou.json'; 
     $url = 'data.json'; 
     $data = file_get_contents($url); 
     $obj = json_decode('['.$data.']'); 
-  }
+}
   $formatid = $obj[0]->formatid;
   $format = $obj[0]->format;
-
+var_dump($id);
 
 $selectAll = selectAll();
 
@@ -33,7 +32,7 @@ $selectAll = selectAll();
     <head>
         <link rel="stylesheet" href="style.css">            
 </head>
-<form name="id" method="POST">
+<form name="id" method="GET">
 <nav class="dropdownmenu">
             <ul>
               <li><input type='submit' value='gen8ou' name='id' /></li>
@@ -45,6 +44,10 @@ $selectAll = selectAll();
             </ul>
 </nav>
 </form>
+<form action="" method="GET">
+     <input type="submit" name="bouton" value="decroissant">
+     <input type="submit" name="bouton2" value="croissant">
+</form>  
     <body>
         <div id="demo">
             <h1></h1>
@@ -77,15 +80,40 @@ $i=1;
 
   
       $query = $pdo->prepare( 
-      "INSERT INTO test VALUES 
-      ('".$formatid."', '".$format."', '".$row->userid."\n', '".$row->username."\n', '".$row->w."', '".$row->l."', '".$row->t."', '".$row->gxe."', '".$row->r."', '".$row->rd."', '".$row->sigma."', '".$row->rptime."', '".$row->rpr."', '".$row->rprd."', '".$row->rpsigma."', 
-      '".$row->elo."'); "); 
-      $query->setFetchMode(PDO::FETCH_ASSOC);
-      $query->execute();
+      "INSERT INTO test VALUES (:formatid, :formatt, :userid, :username, :w, :l, :t, :gxe, :r, :rd, :sigma, :rptime, :rpr, :rprd, :rpsigma, :elo); "); 
+      $query->bindValue(':formatid', $formatid, PDO::PARAM_STR);
+      $query->bindValue(':formatt', $format, PDO::PARAM_STR);
+      $query->bindValue(':userid', $row->userid, PDO::PARAM_STR);
+      $query->bindValue(':username', $row->username, PDO::PARAM_STR);
+      $query->bindValue(':w', $row->w, PDO::PARAM_STR);
+      $query->bindValue(':l', $row->l, PDO::PARAM_STR);
+      $query->bindValue(':t', $row->t, PDO::PARAM_STR);
+      $query->bindValue(':gxe', $row->gxe, PDO::PARAM_STR);
+      $query->bindValue(':r', $row->r, PDO::PARAM_STR);
+      $query->bindValue(':rd', $row->rd, PDO::PARAM_STR);
+      $query->bindValue(':sigma', $row->sigma, PDO::PARAM_STR);
+      $query->bindValue(':rptime', $row->rptime, PDO::PARAM_STR);
+      $query->bindValue(':rpr', $row->rpr, PDO::PARAM_STR);
+      $query->bindValue(':rprd', $row->rprd, PDO::PARAM_STR);
+      $query->bindValue(':rpsigma', $row->rpsigma, PDO::PARAM_STR);
+      $query->bindValue(':elo', $row->elo, PDO::PARAM_STR);
+//var_dump($row->elo);
+      $resultat = $query->execute();
 
   }
-  
-      show_db(); 
+         
+      $colTab = ['decroissant']; 
+      if (isset($_GET['bouton']) AND in_array($_GET['bouton'], $colTab))
+      {
+        show_db_order();
+
+      } elseif (isset($_GET['bouton']) AND in_array($_GET['bouton'], ['croissant'])) {
+        show_db(); 
+
+      } else {
+      
+          show_db(); 
+      }
       echo '</table>';
 ?>
             </div>
